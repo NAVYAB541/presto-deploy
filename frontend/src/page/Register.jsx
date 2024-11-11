@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-function Register({ setTokenFn }) {
+function Register({ handleSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-
-  const navigate = useNavigate();
 
   const register = () => {
     console.log(email, password, name);
@@ -17,9 +14,7 @@ function Register({ setTokenFn }) {
       name: name,
     })
       .then((response) => {
-        localStorage.setItem('token', response.data.token);
-        setTokenFn(response.data.token);
-        navigate('/dashboard')
+        handleSuccess(response.data.token);
       })
       .catch((error) => {
         alert(error.response.data.error);
