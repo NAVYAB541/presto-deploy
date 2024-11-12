@@ -8,7 +8,7 @@ function LandingPage() {
         <p className="mt-2 text-xl opacity-80">Create. Present. Impress.</p>
       </div>
       <div className="max-w-md w-full space-y-6">
-        <p className="text-center text-lg opacity-70">Sign up or login to get started now</p>
+        <p className="text-center text-lg opacity-70">Sign up or login to get started now.</p>
         <div className="flex justify-center space-x-6">
           <Link
             to="/login"

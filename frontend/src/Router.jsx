@@ -35,25 +35,31 @@ function Router() {
 
   return (
     <>
-      <div>
-        {token && (
-          <>
-            <Link to="/dashboard">Dashboard</Link>
-          </>
-        )}
-      </div>
+      {token && (
+        <nav className="bg-black text-white flex justify-between items-center px-6 py-4">
+          <div>
+            <Link
+              to="/dashboard"
+              className={`text-lg font-semibold hover:text-blue-600 transition-all duration-200 ${location.pathname === '/dashboard' ? 'underline underline-offset-4' : ''
+                }`}
+              style={{
+                textUnderlineOffset: '6px', // Spacing between underline and text
+              }}
+            >
+              <span className="hover:scale-105 transform transition-transform duration-200">Dashboard</span>
+            </Link>
+          </div>
+          <div className="flex items-center">
+            <Logout token={token} setToken={setToken} />
+          </div>
+        </nav>
+      )}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard token={token} />} />
         <Route path="/register" element={<Register handleSuccess={handleNewToken} />} />
         <Route path="/login" element={<Login handleSuccess={handleNewToken} />} />
       </Routes>
-      {token && (
-        <>
-          <hr />
-          <Logout token={token} setToken={setToken} />
-        </>
-      )}
     </>
   )
 }

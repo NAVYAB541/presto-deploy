@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import backendConfig from '../../backend.config.json';
+
+const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
 const Dashboard = function ({ token }) {
 
@@ -7,7 +10,7 @@ const Dashboard = function ({ token }) {
 
   const reallySetStore = (newStore) => {
     axios.put(
-      'http://localhost:5005/store',
+      `${BACKEND_BASE_URL}/store`,
       {
         store: newStore,
       },
@@ -25,7 +28,7 @@ const Dashboard = function ({ token }) {
 
   React.useEffect(() => {
     if (token) {
-      axios.get('http://localhost:5005/store', {
+      axios.get(`${BACKEND_BASE_URL}/store`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => {

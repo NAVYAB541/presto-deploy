@@ -2,6 +2,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ErrorPopup from '../component/ErrorPopup';
+import backendConfig from '../../backend.config.json';
+
+const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
 function Register({ handleSuccess }) {
   const [email, setEmail] = useState('');
@@ -71,7 +74,7 @@ function Register({ handleSuccess }) {
       return;
     }
 
-    axios.post('http://localhost:5005/admin/auth/register', {
+    axios.post(`${BACKEND_BASE_URL}/admin/auth/register`, {
       email: email,
       password: password,
       name: name,
