@@ -4,11 +4,8 @@ import React, { useState } from 'react';
 import { Navigate, useLocation, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Register from './page/Register';
 import Login from './page/Login';
-import Logout from './component/Logout'
-
-const Dashboard = function () {
-  return <>dashboard</>;
-}
+import Dashboard from './page/Dashboard';
+import Logout from './component/Logout';
 
 function Router() {
 
