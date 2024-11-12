@@ -7,13 +7,12 @@ import Logout from './component/Logout';
 import LandingPage from './page/LandingPage';
 
 function Router() {
-
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token'))
   const navigate = useNavigate();
   const location = useLocation();
 
   React.useEffect(() => {
-    if (localStorage.getItem('token') != null) {
+    if (localStorage.getItem('token') !== token) {
       setToken(localStorage.getItem('token'));
     }
   }, []);
@@ -25,10 +24,12 @@ function Router() {
   }
 
   React.useEffect(() => {
-    if (token && ['/login', '/register'].includes(location.pathname)) {
+    if (token && ['/login', '/register', '/'].includes(location.pathname)) {
       navigate('/dashboard');
-    } if (!token && !(['/login', '/register'].includes(location.pathname))) {
+    } else if (!token && !(['/login', '/register'].includes(location.pathname))) {
       navigate('/');
+    } else if (token) {
+      navigate('/dashboard');
     }
   }, [token, location.pathname]);
 
@@ -43,7 +44,7 @@ function Router() {
       </div>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard token={token} />} />
         <Route path="/register" element={<Register handleSuccess={handleNewToken} />} />
         <Route path="/login" element={<Login handleSuccess={handleNewToken} />} />
       </Routes>
