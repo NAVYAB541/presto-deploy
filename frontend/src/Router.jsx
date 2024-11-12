@@ -40,8 +40,7 @@ function Router() {
           <div>
             <Link
               to="/dashboard"
-              className={`text-lg font-semibold hover:text-blue-600 transition-all duration-200 ${location.pathname === '/dashboard' ? 'underline underline-offset-4' : ''
-                }`}
+              className={`text-lg font-semibold hover:text-blue-600 transition-all duration-200 ${location.pathname === '/dashboard' ? 'underline underline-offset-4' : ''}`}
               style={{
                 textUnderlineOffset: '6px', // Spacing between underline and text
               }}
