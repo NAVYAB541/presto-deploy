@@ -12,13 +12,13 @@ function LandingPage() {
         <div className="flex justify-center space-x-6">
           <Link
             to="/login"
-            className="w-full sm:w-auto inline-block px-6 py-3 bg-white text-black font-semibold rounded-lg text-lg text-center hover:bg-gray-200 transition duration-300"
+            className="w-full sm:w-auto inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg text-lg text-center hover:bg-blue-700 transition duration-300"
           >
             Login
           </Link>
           <Link
             to="/register"
-            className="w-full sm:w-auto inline-block px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg text-lg text-center hover:bg-white hover:text-black transition duration-300"
+            className="w-full sm:w-auto inline-block px-6 py-3 bg-transparent border-2 border-blue-600 text-blue-600 font-semibold rounded-lg text-lg text-center hover:bg-blue-600 hover:text-white transition duration-300"
           >
             Register
           </Link>
