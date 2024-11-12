@@ -1,12 +1,54 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import ErrorPopup from '../component/ErrorPopup';
 
 function Login({ handleSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({
+    email: '',
+    password: '',
+  });
+
+  const displayError = (message) => {
+    setError(message);
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setError('');
+  };
+
+  const validateFields = () => {
+    let valid = true;
+    const errors = {
+      email: '',
+      password: '',
+    };
+
+    if (!email) {
+      errors.email = 'Email is required';
+      valid = false;
+    }
+
+    if (!password) {
+      errors.password = 'Password is required';
+      valid = false;
+    }
+
+    setFieldErrors(errors);
+    return valid;
+  };
 
   const login = () => {
+    if (!validateFields()) {
+      return;
+    }
+
     axios.post('http://localhost:5005/admin/auth/login', {
       email: email,
       password: password,
@@ -15,9 +57,31 @@ function Login({ handleSuccess }) {
         handleSuccess(response.data.token);
       })
       .catch((error) => {
-        alert(error.response.data.error);
+        displayError(error.response.data.error);
       });
   }
+
+  // Handle Enter key press for form submission
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      login();
+    }
+
+    if (e.key === 'ArrowDown') {
+      // Focus next input
+      if (e.target.id === 'email') {
+        document.getElementById('password').focus();
+      }
+    }
+
+    if (e.key === 'ArrowUp') {
+      // Focus previous input
+      if (e.target.id === 'password') {
+        document.getElementById('email').focus();
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black py-8 px-6 sm:px-12">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
@@ -33,7 +97,9 @@ function Login({ handleSuccess }) {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
+            {fieldErrors.email && <p className="text-red-600 text-sm">{fieldErrors.email}</p>}
           </div>
 
           <div>
@@ -44,7 +110,9 @@ function Login({ handleSuccess }) {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
+            {fieldErrors.password && <p className="text-red-600 text-sm">{fieldErrors.password}</p>}
           </div>
 
           {/* Login Button */}
@@ -73,8 +141,9 @@ function Login({ handleSuccess }) {
           </p>
         </div>
       </div>
+      {showPopup && <ErrorPopup message={error} onClose={closePopup} />}
     </div>
   );
-}
+};
 
-export default Login
+export default Login;
