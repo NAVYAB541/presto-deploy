@@ -11,7 +11,7 @@ const Logout = ({ token, setToken }) => {
       .then(() => {
         localStorage.removeItem('token');
         setToken(null);
-        navigate('/login')
+        navigate('/')
       })
       .catch((error) => {
         alert(error.response.data.error);

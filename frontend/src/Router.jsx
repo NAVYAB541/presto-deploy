@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-// import reactLogo from './assets/react.svg';
-// import viteLogo from '/vite.svg';
 import { Navigate, useLocation, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Register from './page/Register';
 import Login from './page/Login';
 import Dashboard from './page/Dashboard';
 import Logout from './component/Logout';
+import LandingPage from './page/LandingPage';
 
 function Router() {
 
@@ -29,27 +28,21 @@ function Router() {
     if (token && ['/login', '/register'].includes(location.pathname)) {
       navigate('/dashboard');
     } if (!token && !(['/login', '/register'].includes(location.pathname))) {
-      navigate('/login');
+      navigate('/');
     }
   }, [token, location.pathname]);
 
   return (
     <>
       <div>
-        {token ? (
+        {token && (
           <>
             <Link to="/dashboard">Dashboard</Link>
-          </>
-        ) : (
-          <>
-            <Link to="/register">Register</Link>
-            &nbsp;|&nbsp;
-            <Link to="/login">Login</Link>
           </>
         )}
       </div>
       <Routes>
-        <Route path="/" element={<Navigate to="/register" />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register handleSuccess={handleNewToken} />} />
         <Route path="/login" element={<Login handleSuccess={handleNewToken} />} />
