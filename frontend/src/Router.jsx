@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, useLocation, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Register from './page/Register';
 import Login from './page/Login';
 import Dashboard from './page/Dashboard';
