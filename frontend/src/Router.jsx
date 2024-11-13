@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Register from './page/Register';
 import Login from './page/Login';
-import Dashboard from './page/Dashboard';
+import Dashboard from './page/dashboard/Dashboard';
 import Logout from './component/Logout';
 import LandingPage from './page/LandingPage';
 
