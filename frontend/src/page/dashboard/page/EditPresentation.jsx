@@ -15,6 +15,7 @@ const EditPresentation = () => {
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [error, setError] = useState('');
+  const [isDeleteSlideError, setIsDeleteSlideError] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [presentation, setPresentation] = useState(null);
   const [showTitleModal, setShowTitleModal] = useState(false);
@@ -42,7 +43,10 @@ const EditPresentation = () => {
 
   const handlePopupClose = () => {
     setShowPopup(false);
-    navigate('/dashboard');
+    if (!isDeleteSlideError) {
+      navigate('/dashboard'); // Only redirect if not a delete-slide error
+    }
+    setIsDeleteSlideError(false); // Reset the flag after closing
   };
 
   const updatePresentation = (updatedData) => {
@@ -78,6 +82,23 @@ const EditPresentation = () => {
 
     const updatedSlidesArr = [...(presentation.slidesArr || []), newSlide];
     const updatedSlidesCount = updatedSlidesArr.length;
+
+    updatePresentation({ slidesArr: updatedSlidesArr, slides: updatedSlidesCount });
+  };
+
+  const handleDeleteSlide = () => {
+    if (presentation.slidesArr.length === 1) {
+      setError('Cannot delete the only slide. Consider deleting the entire presentation.');
+      setIsDeleteSlideError(true); // Set the flag to prevent redirection
+      setShowPopup(true);
+      return;
+    }
+
+    const updatedSlidesArr = presentation.slidesArr.filter((_, index) => index !== currentSlideIndex);
+    const updatedSlidesCount = updatedSlidesArr.length;
+
+    const newIndex = Math.max(0, currentSlideIndex - 1);
+    setCurrentSlideIndex(newIndex);
 
     updatePresentation({ slidesArr: updatedSlidesArr, slides: updatedSlidesCount });
   };
@@ -233,6 +254,7 @@ const EditPresentation = () => {
           </button>
         )}
         <button onClick={handleAddSlide} className="bg-blue-600 text-white px-4 py-2 rounded  hover:bg-blue-700">New Slide</button>
+        <button onClick={handleDeleteSlide} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Delete Slide</button>
         {presentation?.slidesArr?.length > 1 && (
           <button
             onClick={handleNextSlide}
