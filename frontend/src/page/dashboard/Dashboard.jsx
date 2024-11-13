@@ -1,14 +1,17 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import backendConfig from '../../../backend.config.json';
+import NewPresentationModal from './modal/NewPresentationModal';
+import PresentationCard from './component/PresentationCard';
 
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
-const Dashboard = function ({ token }) {
+const Dashboard = ({ token }) => {
 
-  const [store, setStore] = React.useState(null);
+  const [store, setStore] = useState({ decks: [] });
+  const [showModal, setShowModal] = useState(false);
 
-  const reallySetStore = (newStore) => {
+  const updateStore = (newStore) => {
     axios.put(
       `${BACKEND_BASE_URL}/store`,
       {
@@ -26,13 +29,13 @@ const Dashboard = function ({ token }) {
       });
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
       axios.get(`${BACKEND_BASE_URL}/store`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((response) => {
-          setStore(response.data.store);
+          setStore(response.data.store || { decks: [] });
         })
         .catch((error) => {
           alert(error.response.data.error);
@@ -40,22 +43,36 @@ const Dashboard = function ({ token }) {
     }
   }, [token]);
 
-  const newDeck = () => {
-    const newStore = { ...store };
-    if (!('decks' in newStore)) {
-      newStore['decks'] = [];
-    }
-    newStore['decks'].push({
-      title: 'Hayden sucks',
-    })
-    reallySetStore(newStore);
-  }
+  const handleCreatePresentation = (newPresentation) => {
+    const newStore = {
+      ...store,
+      decks: [...(store.decks || []), newPresentation],
+    };
+    updateStore(newStore);
+  };
 
-  return <>
-    ALL YOUR STUFF!<br />
-    <button onClick={newDeck}>New Deck</button>
-    {store ? JSON.stringify(store) : 'Loading...'};
-  </>
-}
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
+      <button
+        onClick={() => setShowModal(true)}
+        className="bg-blue-600 text-white px-4 py-2 rounded mb-6"
+      >
+        New Presentation
+      </button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {Array.isArray(store.decks) && store.decks.map((presentation, index) => (
+          <PresentationCard key={index} presentation={presentation} />
+        ))}
+      </div>
+      {showModal && (
+        <NewPresentationModal
+          onCreate={handleCreatePresentation}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+    </div>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
