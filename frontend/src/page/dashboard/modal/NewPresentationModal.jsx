@@ -7,6 +7,8 @@ const NewPresentationModal = ({ onCreate, onClose }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [nameError, setNameError] = useState('');
+  const [activeInput, setActiveInput] = useState('url'); // 'url' or 'file'
+  const [previewThumbnail, setPreviewThumbnail] = useState(null);
 
   const handleCreate = () => {
     // Validate name field
@@ -15,22 +17,52 @@ const NewPresentationModal = ({ onCreate, onClose }) => {
       return;
     }
 
+    const thumbnail = thumbnailFile
+      ? URL.createObjectURL(thumbnailFile)
+      : thumbnailUrl.trim() || defaultThumbnail;
+
     const newPresentation = {
       name,
       description,
-      thumbnail: thumbnailFile
-        ? URL.createObjectURL(thumbnailFile)
-        : thumbnailUrl || defaultThumbnail,
+      thumbnail,
       slides: 1, // Default single slide
     };
     onCreate(newPresentation);
     onClose();
   };
 
+  const handleUrlPreview = () => {
+    if (thumbnailUrl.trim()) {
+      setPreviewThumbnail(thumbnailUrl);
+    } else {
+      setPreviewThumbnail(null); // Hide preview if URL is empty
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setThumbnailFile(file);
+      setPreviewThumbnail(URL.createObjectURL(file));
+    } else {
+      setPreviewThumbnail(null); // Hide preview if file is removed
+    }
+  };
+
+  const handleInputToggle = (inputType) => {
+    setActiveInput(inputType);
+    setThumbnailUrl(''); // Clear URL input
+    setThumbnailFile(null); // Clear file input
+    setPreviewThumbnail(null); // Hide preview when switching inputs
+  };
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+    if (nameError) setNameError('');
+  };
+
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleCreate();
-    } else if (e.key === 'ArrowDown') {
+    if (e.key === 'ArrowDown') {
       if (e.target.id === 'name') {
         document.getElementById('description').focus();
       } else if (e.target.id === 'description') {
@@ -46,12 +78,9 @@ const NewPresentationModal = ({ onCreate, onClose }) => {
       } else if (e.target.id === 'description') {
         document.getElementById('name').focus();
       }
+    } else if (e.key === 'Enter' && e.target.id === 'thumbnailUrl') {
+      handleUrlPreview(); // Trigger preview for URL field only
     }
-  };
-
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-    if (nameError) setNameError('');
   };
 
   return (
@@ -78,27 +107,60 @@ const NewPresentationModal = ({ onCreate, onClose }) => {
           className="w-full mb-2 p-2 border rounded"
         />
 
-        {/* URL Input for Thumbnail */}
-        <input
-          id="thumbnailUrl"
-          type="url"
-          placeholder="Thumbnail URL"
-          value={thumbnailUrl}
-          onChange={(e) => setThumbnailUrl(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="w-full mb-2 p-2 border rounded"
-        />
-        {/* File Upload for Thumbnail */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-semibold mb-1">Or upload a file:</label>
-          <input
-            id="thumbnailFile"
-            type="file"
-            onChange={(e) => setThumbnailFile(e.target.files[0])}
-            onKeyDown={handleKeyDown}
-            className="w-full"
-          />
+        {/* Preview of the thumbnail */}
+        {previewThumbnail && (
+          <div className="mb-4 flex justify-center relative">
+            <img
+              src={previewThumbnail}
+              alt="Thumbnail preview"
+              className="w-32 h-20 object-cover border"
+            />
+            {previewThumbnail === defaultThumbnail && (
+              <span className="absolute inset-0 flex items-center justify-center text-black">No Thumbnail</span>
+            )}
+          </div>
+        )}
+
+        {/* Toggle Buttons for URL and File Upload */}
+        <div className="flex mb-4">
+          <button
+            onClick={() => handleInputToggle('url')}
+            className={`flex-1 px-4 py-2 rounded-l-lg ${activeInput === 'url' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+          >
+            Insert URL
+          </button>
+          <button
+            onClick={() => handleInputToggle('file')}
+            className={`flex-1 px-4 py-2 rounded-r-lg ${activeInput === 'file' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+          >
+            Upload File
+          </button>
         </div>
+
+        {/* Conditional Input Fields based on selected option */}
+        {activeInput === 'url' && (
+          <input
+            id="thumbnailUrl"
+            type="url"
+            placeholder="Thumbnail URL"
+            value={thumbnailUrl}
+            onChange={(e) => setThumbnailUrl(e.target.value)}
+            onBlur={handleUrlPreview} // Preview the URL on blur
+            onKeyDown={handleKeyDown} // Preview on Enter key press
+            className="w-full mb-4 p-2 border rounded"
+          />
+        )}
+
+        {activeInput === 'file' && (
+          <div className="mb-4">
+            <input
+              id="thumbnailFile"
+              type="file"
+              onChange={handleFileChange} // Preview the file when chosen
+              className="w-full"
+            />
+          </div>
+        )}
 
         <button onClick={handleCreate} className="bg-blue-600 text-white px-4 py-2 rounded mr-2">
           Create
