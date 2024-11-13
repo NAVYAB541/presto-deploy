@@ -48,9 +48,13 @@ const Dashboard = ({ token }) => {
   }, [token]);
 
   const handleCreatePresentation = (newPresentation) => {
+    const newDeck = {
+      ...newPresentation,
+      id: `deck-${Date.now()}`, // Generate unique ID
+    };
     const newStore = {
       ...store,
-      decks: [...(store.decks || []), newPresentation],
+      decks: [...(store.decks || []), newDeck],
     };
     updateStore(newStore);
   };

@@ -1,8 +1,18 @@
 import defaultThumbnail from '../../../assets/default-thumbnail.png';
+import { useNavigate } from 'react-router-dom';
 
 const PresentationCard = ({ presentation }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/presentation/${presentation.id}`);
+  };
+
   return (
-    <div className="w-full h-auto p-4 bg-gray-200 rounded-lg shadow flex flex-col justify-between">
+    <div
+      onClick={handleClick}
+      className="w-full h-auto p-4 bg-gray-200 rounded-lg shadow flex flex-col justify-between"
+    >
       <img
         src={presentation.thumbnail || defaultThumbnail}
         alt="thumbnail"

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useLocation, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 import Register from './page/Register';
 import Login from './page/Login';
 import Dashboard from './page/dashboard/Dashboard';
 import Logout from './component/Logout';
 import LandingPage from './page/LandingPage';
+import EditPresentation from './page/dashboard/page/EditPresentation';
 
 function Router() {
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -28,8 +29,6 @@ function Router() {
       navigate('/dashboard');
     } else if (!token && !(['/login', '/register'].includes(location.pathname))) {
       navigate('/');
-    } else if (token) {
-      navigate('/dashboard');
     }
   }, [token, location.pathname]);
 
@@ -58,6 +57,13 @@ function Router() {
         <Route path="/dashboard" element={<Dashboard token={token} />} />
         <Route path="/register" element={<Register handleSuccess={handleNewToken} />} />
         <Route path="/login" element={<Login handleSuccess={handleNewToken} />} />
+        <Route path="/presentation/:id" element={<EditPresentation />} />
+
+        {/* Catch-all route for invalid paths */}
+        <Route
+          path="*"
+          element={token ? <Navigate to="/dashboard" /> : <Navigate to="/" />}
+        />
       </Routes>
     </>
   )
