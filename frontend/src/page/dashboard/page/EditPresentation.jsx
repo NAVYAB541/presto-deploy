@@ -44,14 +44,6 @@ const EditPresentation = () => {
     navigate('/dashboard'); // Redirect to dashboard when popup is closed
   };
 
-  const handleBack = () => {
-    navigate('/dashboard');
-  };
-
-  const handleDelete = () => {
-    setConfirmDelete(true);
-  };
-
   const updatePresentation = (updatedData) => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
