@@ -19,13 +19,19 @@ const NewPresentationModal = ({ onCreate, onClose }) => {
 
     const thumbnail = thumbnailFile
       ? URL.createObjectURL(thumbnailFile)
-      : thumbnailUrl.trim() || defaultThumbnail;
+      : thumbnailUrl.trim() || defaultThumbnail
+
+    const initialSlide = {
+      id: `slide-${Date.now()}`,
+      position: 1, // Initial position for the first slide
+    };
 
     const newPresentation = {
       name,
       description,
       thumbnail,
       slides: 1, // Default single slide
+      slidesArr: [initialSlide],
     };
     onCreate(newPresentation);
     onClose();
