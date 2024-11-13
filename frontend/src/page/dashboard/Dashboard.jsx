@@ -7,7 +7,6 @@ import PresentationCard from './component/PresentationCard';
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
 const Dashboard = ({ token }) => {
-
   const [store, setStore] = useState({ decks: [] });
   const [showModal, setShowModal] = useState(false);
 
@@ -60,10 +59,12 @@ const Dashboard = ({ token }) => {
       >
         New Presentation
       </button>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {Array.isArray(store.decks) && store.decks.map((presentation, index) => (
-          <PresentationCard key={index} presentation={presentation} />
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {store && store.decks
+          ? [...store.decks].reverse().map((presentation, index) => (
+            <PresentationCard key={index} presentation={presentation} />
+          ))
+          : 'Loading...'}
       </div>
       {showModal && (
         <NewPresentationModal
