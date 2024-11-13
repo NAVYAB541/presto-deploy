@@ -3,12 +3,15 @@ import axios from 'axios';
 import backendConfig from '../../../backend.config.json';
 import NewPresentationModal from './modal/NewPresentationModal';
 import PresentationCard from './component/PresentationCard';
+import ErrorPopup from '../../component/ErrorPopup';
 
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
 const Dashboard = ({ token }) => {
   const [store, setStore] = useState({ decks: [] });
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
 
   const updateStore = (newStore) => {
     axios.put(
@@ -24,7 +27,8 @@ const Dashboard = ({ token }) => {
         setStore(newStore);
       })
       .catch((error) => {
-        alert(error.response.data.error);
+        setError(error.response?.data?.error || 'Failed to update store');
+        setShowPopup(true);
       });
   }
 
@@ -37,7 +41,8 @@ const Dashboard = ({ token }) => {
           setStore(response.data.store || { decks: [] });
         })
         .catch((error) => {
-          alert(error.response.data.error);
+          setError(error.response?.data?.error || 'Failed to load store');
+          setShowPopup(true);
         });
     }
   }, [token]);
@@ -64,13 +69,16 @@ const Dashboard = ({ token }) => {
           ? [...store.decks].reverse().map((presentation, index) => (
             <PresentationCard key={index} presentation={presentation} />
           ))
-          : 'Loading...'}
+          : 'No presentations to display'}
       </div>
       {showModal && (
         <NewPresentationModal
           onCreate={handleCreatePresentation}
           onClose={() => setShowModal(false)}
         />
+      )}
+      {showPopup && (
+        <ErrorPopup message={error} onClose={() => setShowPopup(false)} />
       )}
     </div>
   );
