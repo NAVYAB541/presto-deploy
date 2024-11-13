@@ -137,20 +137,71 @@ const EditPresentation = () => {
         <h2 className="text-2xl font-bold mr-6">{presentation?.name || 'Untitled'}</h2>
         <button
           onClick={() => setShowTitleModal(true)}
-          className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200">
-          Edit
+          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 flex items-center space-x-2"
+        >
+          <svg
+            className="h-4 w-4 text-white"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+          </svg>
+          <span>Edit</span>
         </button>
       </div>
 
       {/* Thumbnail & Controls */}
       <div className="flex justify-between mb-6">
-        <button onClick={() => setShowThumbnailModal(true)} className="bg-blue-600 text-white px-4 py-2 rounded">
-          Edit Thumbnail
+        <button
+          onClick={() => setShowThumbnailModal(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2  hover:bg-blue-700"
+        >
+          <svg
+            className="h-5 w-5 text-white"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+          <span>Edit Thumbnail</span>
         </button>
+
         <div className="flex items-center space-x-2">
-          <button onClick={() => setConfirmDelete(true)} className="bg-red-600 text-white px-4 py-2 rounded">
-            Delete Presentation
+          <button
+            onClick={() => setConfirmDelete(true)}
+            className="bg-red-600 text-white px-4 py-2 rounded flex items-center space-x-2  hover:bg-red-700"
+          >
+            <svg
+              className="h-5 w-5 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" />
+              <path d="M10 11v6" />
+              <path d="M14 11v6" />
+              <path d="M15 4l-1-1H10L9 4" />
+            </svg>
+            <span>Delete Presentation</span>
           </button>
+
           <button onClick={() => navigate('/dashboard')} className="bg-black text-white px-4 py-2 rounded">
             Back
           </button>
@@ -181,7 +232,7 @@ const EditPresentation = () => {
             </svg>
           </button>
         )}
-        <button onClick={handleAddSlide} className="bg-blue-600 text-white px-4 py-2 rounded">New Slide</button>
+        <button onClick={handleAddSlide} className="bg-blue-600 text-white px-4 py-2 rounded  hover:bg-blue-700">New Slide</button>
         {presentation?.slidesArr?.length > 1 && (
           <button
             onClick={handleNextSlide}
