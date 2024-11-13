@@ -232,7 +232,7 @@ const EditPresentation = () => {
       {/* Slide Display */}
       <div className="w-full max-w-3xl mx-auto mb-4 bg-gray-50 rounded-md overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
         {presentation && presentation.slidesArr && presentation.slidesArr.length > 0 ? (
-          <Slide slide={presentation.slidesArr[currentSlideIndex]} />
+          <Slide slide={presentation.slidesArr[currentSlideIndex]} index={currentSlideIndex} />
         ) : (
           <div className="text-gray-500 flex items-center justify-center h-full">No slides available</div>
         )}
