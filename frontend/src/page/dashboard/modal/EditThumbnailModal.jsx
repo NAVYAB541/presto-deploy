@@ -6,6 +6,7 @@ const EditThumbnailModal = ({ currentThumbnail, onSave, onClose }) => {
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [activeInput, setActiveInput] = useState('url'); // 'url' or 'file'
   const [previewThumbnail, setPreviewThumbnail] = useState(currentThumbnail);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const handleSave = () => {
     let newThumbnail = '';
@@ -44,15 +45,22 @@ const EditThumbnailModal = ({ currentThumbnail, onSave, onClose }) => {
 
   const handleInputToggle = (inputType) => {
     setActiveInput(inputType);
-    setThumbnailUrl('');
-    setThumbnailFile(null);
-    setPreviewThumbnail(currentThumbnail); // Reset preview to the original thumbnail
+    setThumbnailUrl(''); // Clear URL field
+    setThumbnailFile(null); // Clear file input
+    if (isDeleted) {
+      // Keep default-thumbnail as preview if delete flag is active
+      setPreviewThumbnail(defaultThumbnail);
+    } else {
+      // Reset preview to the original thumbnail
+      setPreviewThumbnail(currentThumbnail);
+    }
   };
 
   const handleDeleteThumbnail = () => {
-    setThumbnailUrl(''); // Clear URL field
-    setThumbnailFile(null); // Clear file input
+    setThumbnailUrl('');
+    setThumbnailFile(null);
     setPreviewThumbnail(defaultThumbnail); // Set preview to default thumbnail
+    setIsDeleted(true); // Set delete flag
   };
 
   return (
