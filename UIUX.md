@@ -62,3 +62,25 @@ for users who rely on visual cues to understand button functions.
 and they change appearance when disabled, providing a visual cue about the 
 user's position within the slideshow. This approach reduces confusion and makes 
 navigation between slides intuitive.
+
+## 2.3 Feature Set 3
+
+- **Enhanced Numerical Input Control**: For fields that require numerical input,
+ such as element size and position, inputs are constrained to values between 1 
+ and 100. This restriction ensures that elements are added with accurate and 
+ proportional dimensions relative to the slide, preventing layout 
+ inconsistencies and enhancing usability.
+
+- **Dynamic Color Selection for Text**: The color input in text modals includes 
+a color picker to provide users with an intuitive selection interface, rather 
+than requiring manual HEX code entry. This feature simplifies customization and 
+improves the overall editing experience.
+
+- **Real-Time Image Preview**: When uploading an image, users are shown a 
+real-time preview of the selected image, ensuring they can verify their 
+selection before adding it to the slide.
+
+- **Consistent Icon-Based Action Buttons**: Toolbar buttons for adding text, 
+image, video, and code blocks are accompanied by distinct icons that align with 
+each element type. This icon-based design aids in quick recognition, making the 
+interface more visually informative and user-friendly.
