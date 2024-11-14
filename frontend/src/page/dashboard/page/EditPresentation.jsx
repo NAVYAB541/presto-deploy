@@ -269,7 +269,7 @@ const EditPresentation = () => {
       {/* Button to toggle toolbar */}
       <button
         onClick={() => setShowToolbar((prev) => !prev)}
-        className="bg-gray-500 text-white px-3 py-2 my-6 rounded mb-4"
+        className="bg-blue-600 text-white px-3 py-2 my-6 rounded mb-4"
       >
         {showToolbar ? "Hide Toolbar" : "Show Toolbar"}
       </button>
@@ -349,7 +349,7 @@ const EditPresentation = () => {
       )}
       {showPopup && <ErrorPopup message={error} onClose={handlePopupClose} />}
       {confirmDelete && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" style={{ zIndex: 10000 }}>
           <div className="bg-white p-6 rounded-lg shadow-lg w-80">
             <p>Are you sure?</p>
             <button onClick={handleDeletePresentation} className="bg-red-600 text-white px-4 py-2 rounded mt-4">Yes</button>
