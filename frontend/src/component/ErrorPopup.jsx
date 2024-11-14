@@ -1,6 +1,7 @@
 function ErrorPopup({ message, onClose }) {
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-100000">
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center"
+      style={{ zIndex: 10000 }}>
       <div className="bg-red-600 p-6 rounded-lg shadow-lg w-1/3">
         <h3 className="text-white text-xl font-semibold">Error</h3>
         <p className="text-white mt-4">{message}</p>
