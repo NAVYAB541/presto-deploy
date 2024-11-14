@@ -2,11 +2,13 @@ import { useState } from 'react';
 import AddTextModal from '../modal/AddTextModal';
 import AddImageModal from '../modal/AddImageModal';
 import AddVideoModal from '../modal/AddVideoModal';
+import AddCodeModal from '../modal/AddCodeModal';
 
 const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
   const [showTextModal, setShowTextModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showCodeModal, setShowCodeModal] = useState(false);
 
   const handleAddTextBox = (textProperties) => {
     // Add a new text element to the current slide
@@ -74,6 +76,28 @@ const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
     setShowVideoModal(false);
   };
 
+  const handleAddCodeBlock = (codeProperties) => {
+    const newCodeElement = {
+      id: `element-${Date.now()}`,
+      type: 'code',
+      content: codeProperties.content,
+      language: codeProperties.language,
+      size: codeProperties.size,
+      fontSize: codeProperties.fontSize,
+      position: { x: 0, y: 0 },
+      layerIndex: presentation.slidesArr[currentSlideIndex].elements.length,
+    };
+
+    const updatedSlidesArr = presentation.slidesArr.map((slide, index) =>
+      index === currentSlideIndex
+        ? { ...slide, elements: [...slide.elements, newCodeElement] }
+        : slide
+    );
+
+    updatePresentation({ slidesArr: updatedSlidesArr });
+    setShowCodeModal(false);
+  };
+
   return (
     <div className="toolbar bg-gray-200 p-2 rounded mb-4">
       <button
@@ -88,11 +112,15 @@ const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
       <button onClick={() => setShowVideoModal(true)} className="bg-purple-600 text-white px-4 py-2 rounded ml-2">
         Add Video
       </button>
+      <button onClick={() => setShowCodeModal(true)} className="bg-orange-600 text-white px-4 py-2 rounded ml-2">
+        Add Code Block
+      </button>
 
       {/* All 'add' modals*/}
       {showTextModal && <AddTextModal onSave={handleAddTextBox} onClose={() => setShowTextModal(false)} />}
       {showImageModal && <AddImageModal onSave={handleAddImage} onClose={() => setShowImageModal(false)} />}
       {showVideoModal && <AddVideoModal onSave={handleAddVideo} onClose={() => setShowVideoModal(false)} />}
+      {showCodeModal && <AddCodeModal onSave={handleAddCodeBlock} onClose={() => setShowCodeModal(false)} />}
     </div>
   );
 };

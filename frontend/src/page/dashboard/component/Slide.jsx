@@ -1,4 +1,15 @@
 import YouTube from 'react-youtube';
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vs2015 } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import python from 'highlight.js/lib/languages/python';
+import c from 'highlight.js/lib/languages/c';
+
+// Register languages in highlight.js
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('c', c);
 
 const Slide = ({ slide, index, onEditElement, onDeleteElement }) => {
   return (
@@ -76,6 +87,33 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement }) => {
               }}
               className="w-full h-full"
             />
+          </div>
+        ) : element.type === 'code' ? (
+          <div
+            key={element.id}
+            onDoubleClick={() => onEditElement(element)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              onDeleteElement(element.id);
+            }}
+            className="absolute"
+            style={{
+              width: `${element.size.width}%`,
+              height: `${element.size.height}%`,
+              top: `${element.position.y}%`,
+              left: `${element.position.x}%`,
+              zIndex: element.layerIndex,
+              overflow: 'auto',
+              fontSize: `${element.fontSize}em`,
+              border: '1px solid lightgrey',
+              backgroundColor: '#1e1e1e',
+              color: 'white',
+              padding: '5px',
+            }}
+          >
+            <SyntaxHighlighter language={hljs.highlightAuto(element.content).language} style={vs2015}>
+              {element.content}
+            </SyntaxHighlighter>
           </div>
         ) : null  // Default case to handle other element types
       ))}

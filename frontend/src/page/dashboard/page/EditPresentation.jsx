@@ -11,6 +11,7 @@ import defaultThumbnail from '../../../assets/default-thumbnail.png';
 import EditTextModal from '../modal/EditTextModal';
 import EditImageModal from '../modal/EditImageModal';
 import EditVideoModal from '../modal/EditVideoModal';
+import EditCodeModal from '../modal/EditCodeModal';
 
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
@@ -30,6 +31,7 @@ const EditPresentation = () => {
   const [showTextModal, setShowTextModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showCodeModal, setShowCodeModal] = useState(false);
 
   useEffect(() => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
@@ -167,7 +169,9 @@ const EditPresentation = () => {
     } else if (element.type === 'image') {
       setShowImageModal(true);
     } else if (element.type === 'video') {
-      setShowVideoModal(true); // Open EditVideoModal for video elements
+      setShowVideoModal(true);
+    } else if (element.type === 'code') {
+      setShowCodeModal(true);
     }
   };
 
@@ -187,6 +191,7 @@ const EditPresentation = () => {
     setShowTextModal(false);
     setShowImageModal(false);
     setShowVideoModal(false);
+    setShowCodeModal(false);
     setEditingElement(null); // Clear the editing element
   };
 
@@ -324,6 +329,13 @@ const EditPresentation = () => {
           element={editingElement}
           onSave={handleSaveEditedElement}
           onClose={() => setShowVideoModal(false)}
+        />
+      )}
+      {showCodeModal && editingElement && editingElement.type === 'code' && (
+        <EditCodeModal
+          element={editingElement}
+          onSave={handleSaveEditedElement}
+          onClose={() => setShowCodeModal(false)}
         />
       )}
 
