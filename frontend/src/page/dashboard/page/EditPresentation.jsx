@@ -12,6 +12,7 @@ import EditTextModal from '../modal/EditTextModal';
 import EditImageModal from '../modal/EditImageModal';
 import EditVideoModal from '../modal/EditVideoModal';
 import EditCodeModal from '../modal/EditCodeModal';
+import ConfirmDeleteElement from '../modal/ConfirmDeleteElement';
 
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
@@ -32,6 +33,8 @@ const EditPresentation = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showCodeModal, setShowCodeModal] = useState(false);
+  const [showDeleteElementModal, setShowDeleteElementModal] = useState(false);
+  const [elementToDelete, setElementToDelete] = useState(null);
 
   useEffect(() => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
@@ -196,14 +199,24 @@ const EditPresentation = () => {
   };
 
   const handleDeleteElement = (elementId) => {
-    if (window.confirm("Are you sure you want to delete this element?")) {
-      const updatedSlidesArr = presentation.slidesArr.map((slide, index) =>
-        index === currentSlideIndex
-          ? { ...slide, elements: slide.elements.filter((el) => el.id !== elementId) }
-          : slide
-      );
-      updatePresentation({ slidesArr: updatedSlidesArr });
-    }
+    setElementToDelete(elementId);
+    setShowDeleteElementModal(true);
+  };
+
+  const confirmDeleteElement = () => {
+    const updatedSlidesArr = presentation.slidesArr.map((slide, index) =>
+      index === currentSlideIndex
+        ? { ...slide, elements: slide.elements.filter((el) => el.id !== elementToDelete) }
+        : slide
+    );
+    updatePresentation({ slidesArr: updatedSlidesArr });
+    setShowDeleteElementModal(false);
+    setElementToDelete(null);
+  };
+
+  const cancelDeleteElement = () => {
+    setShowDeleteElementModal(false);
+    setElementToDelete(null);
   };
 
   return (
@@ -403,6 +416,14 @@ const EditPresentation = () => {
             <button onClick={() => setConfirmDelete(false)} className="bg-gray-500 text-white px-4 py-2 rounded mt-4 ml-2">No</button>
           </div>
         </div>
+      )}
+
+      {/* Confirm Delete Element Modal */}
+      {showDeleteElementModal && (
+        <ConfirmDeleteElement
+          onConfirm={confirmDeleteElement}
+          onCancel={cancelDeleteElement}
+        />
       )}
     </div>
   );
