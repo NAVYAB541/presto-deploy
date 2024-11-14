@@ -10,6 +10,7 @@ import Toolbar from '../component/Toolbar';
 import defaultThumbnail from '../../../assets/default-thumbnail.png';
 import EditTextModal from '../modal/EditTextModal';
 import EditImageModal from '../modal/EditImageModal';
+import EditVideoModal from '../modal/EditVideoModal';
 
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
@@ -28,6 +29,7 @@ const EditPresentation = () => {
   const [editingElement, setEditingElement] = useState(null); // Track the element being edited
   const [showTextModal, setShowTextModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   useEffect(() => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
@@ -164,6 +166,8 @@ const EditPresentation = () => {
       setShowTextModal(true);
     } else if (element.type === 'image') {
       setShowImageModal(true);
+    } else if (element.type === 'video') {
+      setShowVideoModal(true); // Open EditVideoModal for video elements
     }
   };
 
@@ -182,6 +186,7 @@ const EditPresentation = () => {
     updatePresentation({ slidesArr: updatedSlidesArr });
     setShowTextModal(false);
     setShowImageModal(false);
+    setShowVideoModal(false);
     setEditingElement(null); // Clear the editing element
   };
 
@@ -299,7 +304,7 @@ const EditPresentation = () => {
         )}
       </div>
 
-      {/* Render EditTextModal or EditImageModal when an element is being edited */}
+      {/* Render Modals for editing text, image or video elements */}
       {showTextModal && editingElement && (
         <EditTextModal
           element={editingElement}
@@ -312,6 +317,13 @@ const EditPresentation = () => {
           element={editingElement}
           onSave={handleSaveEditedElement}
           onClose={() => setShowImageModal(false)}
+        />
+      )}
+      {showVideoModal && editingElement && editingElement.type === 'video' && (
+        <EditVideoModal
+          element={editingElement}
+          onSave={handleSaveEditedElement}
+          onClose={() => setShowVideoModal(false)}
         />
       )}
 

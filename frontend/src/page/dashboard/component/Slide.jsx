@@ -1,3 +1,5 @@
+import YouTube from 'react-youtube';
+
 const Slide = ({ slide, index, onEditElement, onDeleteElement }) => {
   return (
     <div className="bg-white w-full h-full flex items-center justify-center border border-gray-300 rounded relative">
@@ -26,7 +28,7 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement }) => {
           >
             {element.content}
           </div>
-        ) : (
+        ) : element.type === 'image' ? (
           <img
             key={element.id}
             src={element.src}
@@ -45,7 +47,37 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement }) => {
               zIndex: element.layerIndex,
             }}
           />
-        )
+        ) : element.type === 'video' ? (
+          <div
+            key={element.id}
+            onDoubleClick={() => onEditElement(element)}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              onDeleteElement(element.id);
+            }}
+            className="absolute flex items-center justify-center"
+            style={{
+              width: `${element.size.width}%`,
+              height: `${element.size.height}%`,
+              top: `${element.position.y}%`,
+              left: `${element.position.x}%`,
+              zIndex: element.layerIndex,
+              border: '0.3em solid lightgrey'
+            }}
+          >
+            <YouTube
+              videoId={element.videoId}
+              opts={{
+                width: '100%',
+                height: '100%',
+                playerVars: {
+                  autoplay: element.autoplay ? 1 : 0,
+                },
+              }}
+              className="w-full h-full"
+            />
+          </div>
+        ) : null  // Default case to handle other element types
       ))}
       <div className="absolute bottom-1 left-0.5 w-12 h-12 flex items-center justify-center text-sm font-semibold text-gray-400 bg-white rounded" style={{ fontSize: '1em' }}>
         {index + 1}
