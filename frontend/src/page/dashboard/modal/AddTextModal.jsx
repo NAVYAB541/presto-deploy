@@ -5,9 +5,10 @@ const AddTextModal = ({ onSave, onClose }) => {
   const [size, setSize] = useState({ width: 50, height: 10 });
   const [fontSize, setFontSize] = useState(1);
   const [color, setColor] = useState('#000000');
+  const [fontFamily, setFontFamily] = useState('sans');
 
   const handleSave = () => {
-    onSave({ content, size, fontSize, color });
+    onSave({ content, size, fontSize, color, fontFamily });
     onClose();
   };
 
@@ -53,15 +54,32 @@ const AddTextModal = ({ onSave, onClose }) => {
           </div>
         </div>
 
-        {/* Font Size */}
-        <label className="block mb-1 font-semibold">Font Size (em)</label>
-        <input
-          type="number"
-          placeholder="Font size (e.g., 1.5)"
-          value={fontSize}
-          onChange={(e) => setFontSize(Number(e.target.value))}
-          className="w-full mb-4 p-2 border rounded"
-        />
+        {/* Font Size and Font Family */}
+        <div className="flex space-x-4 mb-4">
+          <div className="flex-1">
+            <label className="block mb-1 font-semibold">Font Size (em)</label>
+            <input
+              type="number"
+              placeholder="Font size (e.g., 1.5)"
+              value={fontSize}
+              onChange={(e) => setFontSize(Number(e.target.value))}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block mb-1 font-semibold">Font Style</label>
+            <select
+              value={fontFamily}
+              onChange={(e) => setFontFamily(e.target.value)}
+              className="w-full p-2 border rounded"
+            >
+              <option value="Roboto">Roboto</option>
+              <option value="Merriweather">Merriweather</option>
+              <option value="Dancing Script">Dancing Script</option>
+              <option value="Lato">Lato</option>
+            </select>
+          </div>
+        </div>
 
         {/* Color */}
         <label className="block mb-1 font-semibold">Text Color</label>

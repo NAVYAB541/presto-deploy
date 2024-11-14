@@ -20,6 +20,7 @@ const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
       position: { x: 0, y: 0 },
       fontSize: textProperties.fontSize,
       color: textProperties.color,
+      fontFamily: textProperties.fontFamily,
       layerIndex: presentation.slidesArr[currentSlideIndex].elements.length,
     };
 

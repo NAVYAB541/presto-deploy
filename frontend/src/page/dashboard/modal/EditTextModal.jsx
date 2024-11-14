@@ -6,15 +6,17 @@ const EditTextModal = ({ element, onSave, onClose }) => {
   const [fontSize, setFontSize] = useState(element.fontSize || 1);
   const [color, setColor] = useState(element.color || '#000000');
   const [position, setPosition] = useState(element.position || { x: 0, y: 0 });
+  const [fontFamily, setFontFamily] = useState(element.fontFamily || 'sans');
 
   const handleSave = () => {
     onSave({
-      ...element, // Keep other properties
+      ...element,
       content,
       size,
       fontSize,
       color,
       position,
+      fontFamily: fontFamily === 'default' ? undefined : fontFamily,
     });
     onClose();
   };
@@ -61,15 +63,33 @@ const EditTextModal = ({ element, onSave, onClose }) => {
           </div>
         </div>
 
-        {/* Font Size */}
-        <label className="block mb-1 font-semibold">Font Size (em)</label>
-        <input
-          type="number"
-          placeholder="Font size (e.g., 1.5)"
-          value={fontSize}
-          onChange={(e) => setFontSize(Number(e.target.value))}
-          className="w-full mb-4 p-2 border rounded"
-        />
+        {/* Font Size and Font Family */}
+        <div className="flex space-x-4 mb-4">
+          <div className="flex-1">
+            <label className="block mb-1 font-semibold">Font Size (em)</label>
+            <input
+              type="number"
+              placeholder="Font size (e.g., 1.5)"
+              value={fontSize}
+              onChange={(e) => setFontSize(Number(e.target.value))}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block mb-1 font-semibold">Font Style</label>
+            <select
+              value={fontFamily}
+              onChange={(e) => setFontFamily(e.target.value)}
+              className="w-full p-2 border rounded"
+              style={{ fontFamily: fontFamily }}
+            >
+              <option value="Roboto" style={{ fontFamily: 'Roboto' }}>Roboto</option>
+              <option value="Merriweather" style={{ fontFamily: 'Merriweather' }}>Merriweather</option>
+              <option value="Dancing Script" style={{ fontFamily: 'Dancing Script' }}>Dancing Script</option>
+              <option value="Lato" style={{ fontFamily: 'Lato' }}>Lato</option>
+            </select>
+          </div>
+        </div>
 
         {/* Color */}
         <label className="block mb-1 font-semibold">Text Color</label>

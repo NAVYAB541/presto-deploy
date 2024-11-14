@@ -31,6 +31,7 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement }) => {
               left: `${element.position.x}%`,
               fontSize: `${element.fontSize}em`,
               color: element.color,
+              fontFamily: element.fontFamily,
               zIndex: element.layerIndex,
               border: '1px solid lightgrey',
               overflow: 'hidden',
