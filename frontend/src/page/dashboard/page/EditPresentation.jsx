@@ -6,7 +6,9 @@ import ErrorPopup from '../../../component/ErrorPopup';
 import EditTitleModal from '../modal/EditTitleModal';
 import EditThumbnailModal from '../modal/EditThumbnailModal';
 import Slide from '../component/Slide';
+import Toolbar from '../component/Toolbar';
 import defaultThumbnail from '../../../assets/default-thumbnail.png';
+import EditTextModal from '../modal/EditTextModal';
 
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
@@ -21,6 +23,9 @@ const EditPresentation = () => {
   const [showTitleModal, setShowTitleModal] = useState(false);
   const [showThumbnailModal, setShowThumbnailModal] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [showToolbar, setShowToolbar] = useState(false);
+  const [editingElement, setEditingElement] = useState(null); // Track the element being edited
+  const [showTextModal, setShowTextModal] = useState(false);
 
   useEffect(() => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
@@ -77,7 +82,7 @@ const EditPresentation = () => {
   const handleAddSlide = () => {
     const newSlide = {
       id: `slide-${Date.now()}`,
-      position: (presentation.slidesArr?.length || 0) + 1,
+      elements: [],
     };
 
     const updatedSlidesArr = [...(presentation.slidesArr || []), newSlide];
@@ -151,6 +156,38 @@ const EditPresentation = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlideIndex, presentation]);
 
+  const handleEditElement = (element) => {
+    setEditingElement(element); // Store the element to be edited
+    setShowTextModal(true); // Show the modal
+  };
+
+  const handleSaveEditedElement = (updatedElement) => {
+    const updatedSlidesArr = presentation.slidesArr.map((slide, index) =>
+      index === currentSlideIndex
+        ? {
+          ...slide,
+          elements: slide.elements.map((el) =>
+            el.id === updatedElement.id ? updatedElement : el
+          ),
+        }
+        : slide
+    );
+
+    updatePresentation({ slidesArr: updatedSlidesArr });
+    setShowTextModal(false);
+    setEditingElement(null); // Clear the editing element
+  };
+
+  const handleDeleteElement = (elementId) => {
+    if (window.confirm("Are you sure you want to delete this element?")) {
+      const updatedSlidesArr = presentation.slidesArr.map((slide, index) =>
+        index === currentSlideIndex
+          ? { ...slide, elements: slide.elements.filter((el) => el.id !== elementId) }
+          : slide
+      );
+      updatePresentation({ slidesArr: updatedSlidesArr });
+    }
+  };
 
   return (
     <div className="p-6">
@@ -158,7 +195,7 @@ const EditPresentation = () => {
         <h2 className="text-2xl font-bold mr-6">{presentation?.name || 'Untitled'}</h2>
         <button
           onClick={() => setShowTitleModal(true)}
-          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 flex items-center space-x-2"
+          className="bg-black text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 flex items-center space-x-2"
         >
           <svg
             className="h-4 w-4 text-white"
@@ -174,7 +211,7 @@ const EditPresentation = () => {
             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
           </svg>
-          <span>Edit</span>
+          <span>Edit Title</span>
         </button>
       </div>
 
@@ -229,14 +266,40 @@ const EditPresentation = () => {
         </div>
       </div>
 
+      {/* Button to toggle toolbar */}
+      <button
+        onClick={() => setShowToolbar((prev) => !prev)}
+        className="bg-gray-500 text-white px-3 py-2 my-6 rounded mb-4"
+      >
+        {showToolbar ? "Hide Toolbar" : "Show Toolbar"}
+      </button>
+
+      {/* Toolbar - only shows if showToolbar is true */}
+      {showToolbar && <Toolbar currentSlideIndex={currentSlideIndex} updatePresentation={updatePresentation} presentation={presentation} />}
+
+
       {/* Slide Display */}
       <div className="w-full max-w-3xl mx-auto mb-4 bg-gray-50 rounded-md overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
         {presentation && presentation.slidesArr && presentation.slidesArr.length > 0 ? (
-          <Slide slide={presentation.slidesArr[currentSlideIndex]} index={currentSlideIndex} />
+          <Slide
+            slide={presentation.slidesArr[currentSlideIndex]}
+            index={currentSlideIndex}
+            onEditElement={handleEditElement}       // Passing edit handler
+            onDeleteElement={handleDeleteElement}   // Passing delete handler
+          />
         ) : (
           <div className="text-gray-500 flex items-center justify-center h-full">No slides available</div>
         )}
       </div>
+
+      {/* Render EditTextModal when an element is being edited */}
+      {showTextModal && editingElement && (
+        <EditTextModal
+          element={editingElement}
+          onSave={handleSaveEditedElement}
+          onClose={() => setShowTextModal(false)}
+        />
+      )}
 
       {/* Navigation Controls */}
       <div className="flex justify-center items-center space-x-4">

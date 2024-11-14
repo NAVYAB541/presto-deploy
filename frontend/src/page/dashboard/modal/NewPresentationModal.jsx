@@ -23,7 +23,7 @@ const NewPresentationModal = ({ onCreate, onClose }) => {
 
     const initialSlide = {
       id: `slide-${Date.now()}`,
-      position: 1, // Initial position for the first slide
+      elements: [],
     };
 
     const newPresentation = {
