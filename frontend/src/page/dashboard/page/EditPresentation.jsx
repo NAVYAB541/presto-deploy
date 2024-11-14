@@ -291,22 +291,31 @@ const EditPresentation = () => {
         {showToolbar ? "Hide Toolbar" : "Show Toolbar"}
       </button>
 
-      {/* Toolbar - only shows if showToolbar is true */}
-      {showToolbar && <Toolbar currentSlideIndex={currentSlideIndex} updatePresentation={updatePresentation} presentation={presentation} />}
+      <div className="p-6 flex flex-col lg:flex-row lg:space-x-4">
+        {/* Toolbar positioned on the left on larger screens */}
+        <div className="lg:w-1/4">
+          {showToolbar && (
+            <Toolbar
+              currentSlideIndex={currentSlideIndex}
+              updatePresentation={updatePresentation}
+              presentation={presentation}
+            />
+          )}
+        </div>
 
-
-      {/* Slide Display */}
-      <div className="w-full max-w-3xl mx-auto mb-4 bg-gray-50 rounded-md overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
-        {presentation && presentation.slidesArr && presentation.slidesArr.length > 0 ? (
-          <Slide
-            slide={presentation.slidesArr[currentSlideIndex]}
-            index={currentSlideIndex}
-            onEditElement={handleEditElement}       // Passing edit handler
-            onDeleteElement={handleDeleteElement}   // Passing delete handler
-          />
-        ) : (
-          <div className="text-gray-500 flex items-center justify-center h-full">No slides available</div>
-        )}
+        {/* Slide Display */}
+        <div className="w-full max-w-3xl mx-auto mb-4 bg-gray-50 rounded-md overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
+          {presentation && presentation.slidesArr && presentation.slidesArr.length > 0 ? (
+            <Slide
+              slide={presentation.slidesArr[currentSlideIndex]}
+              index={currentSlideIndex}
+              onEditElement={handleEditElement}       // Passing edit handler
+              onDeleteElement={handleDeleteElement}   // Passing delete handler
+            />
+          ) : (
+            <div className="text-gray-500 flex items-center justify-center h-full">No slides available</div>
+          )}
+        </div>
       </div>
 
       {/* Render Modals for editing text, image or video elements */}

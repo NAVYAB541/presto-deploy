@@ -99,24 +99,24 @@ const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
   };
 
   return (
-    <div className="toolbar bg-gray-200 p-2 rounded mb-4 flex justify-center space-x-2">
+    <div className="toolbar bg-gray-200 p-3 rounded lg:w-40 lg:ml-0 mb-5 flex lg:flex-col justify-center items-center lg:space-y-2 lg:space-x-0 space-x-2">
       <button
         onClick={() => setShowTextModal(true)}
-        className="bg-black text-white px-3 py-2 rounded flex items-center space-x-2"
+        className="bg-black text-white w-28 h-10 flex items-center justify-center space-x-2 rounded"
       >
-        <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="4 7 4 4 20 4 20 7" />
           <line x1="9" y1="20" x2="15" y2="20" />
           <line x1="12" y1="4" x2="12" y2="20" />
         </svg>
-        <span>Add Text Box</span>
+        <span>Add Text</span>
       </button>
 
       <button
         onClick={() => setShowImageModal(true)}
-        className="bg-black text-white px-3 py-2 rounded flex items-center space-x-2 ml-2"
+        className="bg-black text-white w-28 h-10 flex items-center justify-center space-x-2 rounded"
       >
-        <svg className="h-6 w-6 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
           <line x1="15" y1="8" x2="15.01" y2="8" />
           <rect x="4" y="4" width="16" height="16" rx="3" />
           <path d="M4 15l4 -4a3 5 0 0 1 3 0l5 5" />
@@ -127,9 +127,9 @@ const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
 
       <button
         onClick={() => setShowVideoModal(true)}
-        className="bg-black text-white px-3 py-2 rounded flex items-center space-x-2 ml-2"
+        className="bg-black text-white w-28 h-10 flex items-center justify-center space-x-2 rounded"
       >
-        <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
           <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" />
         </svg>
@@ -138,9 +138,9 @@ const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
 
       <button
         onClick={() => setShowCodeModal(true)}
-        className="bg-black text-white px-3 py-2 rounded flex items-center space-x-2 ml-2"
+        className="bg-black text-white w-28 h-10 flex items-center justify-center space-x-2 rounded"
       >
-        <svg className="h-6 w-6 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="7 8 3 12 7 16" />
           <polyline points="17 8 21 12 17 16" />
           <line x1="14" y1="4" x2="10" y2="20" />
@@ -148,7 +148,6 @@ const Toolbar = ({ currentSlideIndex, updatePresentation, presentation }) => {
         <span>Add Code</span>
       </button>
 
-      {/* All 'add' modals */}
       {showTextModal && <AddTextModal onSave={handleAddTextBox} onClose={() => setShowTextModal(false)} />}
       {showImageModal && <AddImageModal onSave={handleAddImage} onClose={() => setShowImageModal(false)} />}
       {showVideoModal && <AddVideoModal onSave={handleAddVideo} onClose={() => setShowVideoModal(false)} />}
