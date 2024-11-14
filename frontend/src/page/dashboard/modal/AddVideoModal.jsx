@@ -4,14 +4,32 @@ const AddVideoModal = ({ onSave, onClose }) => {
   const [size, setSize] = useState({ width: 50, height: 50 });
   const [url, setUrl] = useState('');
   const [autoplay, setAutoplay] = useState(false);
+  const [errors, setErrors] = useState({ width: '', height: '', url: '' });
 
   const handleSave = () => {
+    let isValid = true;
+    const newErrors = { width: '', height: '', url: '' };
+
     // Extract YouTube video ID from the regular URL
     const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
     if (!videoIdMatch) {
-      alert('Please enter a valid YouTube URL.');
-      return;
+      newErrors.url = 'Please enter a valid YouTube URL.';
+      isValid = false;
     }
+
+    if (size.width < 0 || size.width > 100) {
+      newErrors.width = 'Width must be between 0 and 100.';
+      isValid = false;
+    }
+    if (size.height < 0 || size.height > 100) {
+      newErrors.height = 'Height must be between 0 and 100.';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+
+    if (!isValid) return;
+
     const videoId = videoIdMatch[1];
 
     onSave({ videoId, size, autoplay });
@@ -34,6 +52,7 @@ const AddVideoModal = ({ onSave, onClose }) => {
               onChange={(e) => setSize({ ...size, width: Number(e.target.value) })}
               className="w-full p-2 border rounded"
             />
+            {errors.width && <p className="text-red-600 text-sm">{errors.width}</p>}
           </div>
           <div className="flex-1">
             <label className="block mb-1 font-semibold">Height (%)</label>
@@ -44,6 +63,7 @@ const AddVideoModal = ({ onSave, onClose }) => {
               onChange={(e) => setSize({ ...size, height: Number(e.target.value) })}
               className="w-full p-2 border rounded"
             />
+            {errors.height && <p className="text-red-600 text-sm">{errors.height}</p>}
           </div>
         </div>
 
@@ -54,8 +74,9 @@ const AddVideoModal = ({ onSave, onClose }) => {
           placeholder="https://www.youtube.com/watch?v=..."
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="w-full mb-4 p-2 border rounded"
+          className="w-full mb-2 p-2 border rounded"
         />
+        {errors.url && <p className="text-red-600 text-sm mb-2">{errors.url}</p>}
 
         {/* Autoplay Option */}
         <div className="mb-4">

@@ -19,10 +19,8 @@ const EditThumbnailModal = ({ currentThumbnail, onSave, onClose }) => {
       newThumbnail = URL.createObjectURL(thumbnailFile);
     } else if (!thumbnailFile && !thumbnailUrl) {
       newThumbnail = defaultThumbnail;
-    } else {
-      alert('Please upload a valid file.');
-      return;
     }
+
     onSave(newThumbnail);
     onClose();
   };
