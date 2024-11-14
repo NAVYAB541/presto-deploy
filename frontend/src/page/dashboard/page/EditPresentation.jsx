@@ -249,7 +249,7 @@ const EditPresentation = () => {
       <div className="flex justify-between mb-6">
         <button
           onClick={() => setShowThumbnailModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2  hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2 mr-2 hover:bg-blue-700"
         >
           <svg
             className="h-5 w-5 text-white"
