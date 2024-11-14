@@ -304,33 +304,44 @@ const EditPresentation = () => {
         {showToolbar ? "Hide Toolbar" : "Show Toolbar"}
       </button>
 
-      <div className="p-6 flex flex-col lg:flex-row lg:space-x-4">
-        {/* Toolbar positioned on the left on larger screens */}
-        <div className="lg:w-1/4">
-          {showToolbar && (
+      {/* Responsive layout with the toolbar */}
+      <div className="flex flex-col lg:flex-row lg:space-x-4 items-center lg:items-start">
+        {/* Toolbar positioned at the top for small screens */}
+        {showToolbar && (
+          <div className="block lg:hidden w-full mb-4">
             <Toolbar
               currentSlideIndex={currentSlideIndex}
               updatePresentation={updatePresentation}
               presentation={presentation}
             />
-          )}
-        </div>
+          </div>
+        )}
+
+        {/* Toolbar positioned on the left for large screens */}
+        {showToolbar && (
+          <div className="lg:w-1/4 lg:block hidden"> {/* Show only on larger screens */}
+            <Toolbar
+              currentSlideIndex={currentSlideIndex}
+              updatePresentation={updatePresentation}
+              presentation={presentation}
+            />
+          </div>
+        )}
 
         {/* Slide Display */}
-        <div className="w-full max-w-3xl mx-auto mb-4 bg-gray-50 rounded-md overflow-hidden" style={{ aspectRatio: '16 / 9' }}>
+        <div className={`w-full max-w-3xl mx-auto mb-4 bg-gray-50 rounded-md overflow-hidden ${showToolbar ? 'lg:ml-auto' : ''}`} style={{ aspectRatio: '16 / 9' }}>
           {presentation && presentation.slidesArr && presentation.slidesArr.length > 0 ? (
             <Slide
               slide={presentation.slidesArr[currentSlideIndex]}
               index={currentSlideIndex}
-              onEditElement={handleEditElement}       // Passing edit handler
-              onDeleteElement={handleDeleteElement}   // Passing delete handler
+              onEditElement={handleEditElement}
+              onDeleteElement={handleDeleteElement}
             />
           ) : (
             <div className="text-gray-500 flex items-center justify-center h-full">No slides available</div>
           )}
         </div>
       </div>
-
       {/* Render Modals for editing text, image or video elements */}
       {showTextModal && editingElement && (
         <EditTextModal
