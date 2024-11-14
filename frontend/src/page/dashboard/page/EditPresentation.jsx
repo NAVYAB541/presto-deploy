@@ -9,6 +9,7 @@ import Slide from '../component/Slide';
 import Toolbar from '../component/Toolbar';
 import defaultThumbnail from '../../../assets/default-thumbnail.png';
 import EditTextModal from '../modal/EditTextModal';
+import EditImageModal from '../modal/EditImageModal';
 
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
@@ -26,6 +27,7 @@ const EditPresentation = () => {
   const [showToolbar, setShowToolbar] = useState(false);
   const [editingElement, setEditingElement] = useState(null); // Track the element being edited
   const [showTextModal, setShowTextModal] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   useEffect(() => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
@@ -157,8 +159,12 @@ const EditPresentation = () => {
   }, [currentSlideIndex, presentation]);
 
   const handleEditElement = (element) => {
-    setEditingElement(element); // Store the element to be edited
-    setShowTextModal(true); // Show the modal
+    setEditingElement(element);
+    if (element.type === 'text') {
+      setShowTextModal(true);
+    } else if (element.type === 'image') {
+      setShowImageModal(true);
+    }
   };
 
   const handleSaveEditedElement = (updatedElement) => {
@@ -175,6 +181,7 @@ const EditPresentation = () => {
 
     updatePresentation({ slidesArr: updatedSlidesArr });
     setShowTextModal(false);
+    setShowImageModal(false);
     setEditingElement(null); // Clear the editing element
   };
 
@@ -292,12 +299,19 @@ const EditPresentation = () => {
         )}
       </div>
 
-      {/* Render EditTextModal when an element is being edited */}
+      {/* Render EditTextModal or EditImageModal when an element is being edited */}
       {showTextModal && editingElement && (
         <EditTextModal
           element={editingElement}
           onSave={handleSaveEditedElement}
           onClose={() => setShowTextModal(false)}
+        />
+      )}
+      {showImageModal && editingElement && editingElement.type === 'image' && (
+        <EditImageModal
+          element={editingElement}
+          onSave={handleSaveEditedElement}
+          onClose={() => setShowImageModal(false)}
         />
       )}
 
