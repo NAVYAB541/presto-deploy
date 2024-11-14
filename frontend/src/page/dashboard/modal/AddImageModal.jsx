@@ -97,7 +97,7 @@ const AddImageModal = ({ onSave, onClose }) => {
           className="w-full mb-4 p-2 border rounded"
         />
 
-        <button onClick={handleSave} className="bg-green-600 text-white px-4 py-2 rounded mr-2">
+        <button onClick={handleSave} className="bg-blue-600 text-white px-4 py-2 rounded mr-2">
           Add Image
         </button>
         <button onClick={onClose} className="bg-gray-500 text-white px-4 py-2 rounded">

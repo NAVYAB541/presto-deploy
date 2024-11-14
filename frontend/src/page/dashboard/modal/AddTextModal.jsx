@@ -72,11 +72,12 @@ const AddTextModal = ({ onSave, onClose }) => {
               value={fontFamily}
               onChange={(e) => setFontFamily(e.target.value)}
               className="w-full p-2 border rounded"
+              style={{ fontFamily: fontFamily }}
             >
-              <option value="Roboto">Roboto</option>
-              <option value="Merriweather">Merriweather</option>
-              <option value="Dancing Script">Dancing Script</option>
-              <option value="Lato">Lato</option>
+              <option value="Roboto" style={{ fontFamily: 'Roboto' }}>Roboto</option>
+              <option value="Merriweather" style={{ fontFamily: 'Merriweather' }}>Merriweather</option>
+              <option value="Dancing Script" style={{ fontFamily: 'Dancing Script' }}>Dancing Script</option>
+              <option value="Lato" style={{ fontFamily: 'Lato' }}>Lato</option>
             </select>
           </div>
         </div>
