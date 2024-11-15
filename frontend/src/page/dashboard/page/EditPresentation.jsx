@@ -92,6 +92,8 @@ const EditPresentation = () => {
     const newSlide = {
       id: `slide-${Date.now()}`,
       elements: [],
+      background: presentation.defaultBackground, // Set the slide's background to the default background of the presentation
+      useDefaultBackground: true, // Mark this slide as using the default background
     };
 
     const updatedSlidesArr = [...(presentation.slidesArr || []), newSlide];
@@ -219,6 +221,41 @@ const EditPresentation = () => {
     setElementToDelete(null);
   };
 
+  // Add this handler for saving the background in `EditPresentation`
+  const handleSaveBackground = (backgroundsToSave) => {
+    const updatedSlidesArr = presentation.slidesArr.map((slide, index) => {
+      // Update the current slide background if provided
+      if (index === currentSlideIndex && backgroundsToSave.currentBackground) {
+        return {
+          ...slide,
+          background: backgroundsToSave.currentBackground,
+          useDefaultBackground: false, // Indicates that the current slide is not using the default
+        };
+      }
+
+      // Update slides that are using the default background if the default background has changed
+      if (backgroundsToSave.defaultBackground && slide.useDefaultBackground) {
+        return {
+          ...slide,
+          background: backgroundsToSave.defaultBackground,
+        };
+      }
+
+      // No changes for slides not meeting either condition
+      return slide;
+    });
+
+    // Update the default background in the presentation if it was changed
+    const updatedPresentation = {
+      ...presentation,
+      slidesArr: updatedSlidesArr,
+      defaultBackground: backgroundsToSave.defaultBackground || presentation.defaultBackground,
+    };
+
+    // Persist the updated presentation
+    updatePresentation(updatedPresentation);
+  };
+
   return (
     <div className="p-6">
       <div className="flex items-center mb-4">
@@ -336,6 +373,8 @@ const EditPresentation = () => {
               index={currentSlideIndex}
               onEditElement={handleEditElement}
               onDeleteElement={handleDeleteElement}
+              onSaveBackground={handleSaveBackground}
+              presentation={presentation}
             />
           ) : (
             <div className="text-gray-500 flex items-center justify-center h-full">No slides available</div>

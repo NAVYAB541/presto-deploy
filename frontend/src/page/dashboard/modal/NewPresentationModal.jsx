@@ -32,7 +32,9 @@ const NewPresentationModal = ({ onCreate, onClose }) => {
       thumbnail,
       slides: 1, // Default single slide
       slidesArr: [initialSlide],
+      defaultBackground: { type: 'solid', color: '#ffffff' } // Set default background to solid white
     };
+
     onCreate(newPresentation);
     onClose();
   };
