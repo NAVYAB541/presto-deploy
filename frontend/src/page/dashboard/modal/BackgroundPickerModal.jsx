@@ -161,6 +161,68 @@ const BackgroundPickerModal = ({ onSave, onClose, currentBackground, defaultBack
           <option value="image">Image</option>
         </select>
 
+        {/* Background Options */}
+        {activeSettings.type === 'solid' && (
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold">Color</label>
+            <input
+              type="color"
+              value={activeSettings.color}
+              onChange={(e) => handleColorChange(e.target.value)}
+              className="w-full"
+            />
+          </div>
+        )}
+
+        {activeSettings.type === 'gradient' && (
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold">Gradient Colors</label>
+            <div className="flex space-x-2">
+              <div className="flex-1">
+                <label className="block mb-1 text-sm">Start Color</label>
+                <input
+                  type="color"
+                  value={activeSettings.gradient.start}
+                  onChange={(e) => handleGradientChange({ ...activeSettings.gradient, start: e.target.value })}
+                  className="w-full"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block mb-1 text-sm">End Color</label>
+                <input
+                  type="color"
+                  value={activeSettings.gradient.end}
+                  onChange={(e) => handleGradientChange({ ...activeSettings.gradient, end: e.target.value })}
+                  className="w-full"
+                />
+              </div>
+            </div>
+            <label className="block mt-2 mb-1 font-semibold">Direction</label>
+            <select
+              value={activeSettings.gradient.direction}
+              onChange={(e) => handleGradientChange({ ...activeSettings.gradient, direction: e.target.value })}
+              className="w-full p-2 border rounded"
+            >
+              <option value="to right">Left to Right</option>
+              <option value="to bottom">Top to Bottom</option>
+              <option value="to top right">Top Left to Bottom Right</option>
+            </select>
+          </div>
+        )}
+
+        {activeSettings.type === 'image' && (
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold">Image URL</label>
+            <input
+              type="text"
+              placeholder="Enter image URL"
+              value={activeSettings.image}
+              onChange={(e) => handleImageChange(e.target.value)}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+        )}
+
         {/* Background Preview */}
         <div className="mb-4">
           <label className="block mb-1 font-semibold">Background Preview</label>
