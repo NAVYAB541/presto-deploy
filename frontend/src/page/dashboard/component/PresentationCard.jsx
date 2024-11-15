@@ -5,7 +5,8 @@ const PresentationCard = ({ presentation }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/presentation/${presentation.id}`);
+    // Navigate to the presentation editor with the slide number set to 1
+    navigate(`/presentation/${presentation.id}/slide/1`);
   };
 
   return (

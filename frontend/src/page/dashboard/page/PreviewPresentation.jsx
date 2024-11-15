@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import backendConfig from '../../../../backend.config.json';
 import Slide from '../component/Slide';
@@ -6,9 +6,10 @@ import Slide from '../component/Slide';
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
 const PreviewPresentation = () => {
-  const { id } = useParams();
+  const { id, slideNumber } = useParams();
+  const navigate = useNavigate();
   const [presentation, setPresentation] = useState(null);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(Number(slideNumber) - 1);
 
   useEffect(() => {
     // Fetch the presentation data using the ID
@@ -26,6 +27,13 @@ const PreviewPresentation = () => {
       })
       .catch((error) => console.error('Error fetching presentation:', error));
   }, [id]);
+
+  // Update URL whenever currentSlideIndex changes
+  useEffect(() => {
+    if (presentation) {
+      navigate(`/preview/${id}/slide/${currentSlideIndex + 1}`, { replace: true });
+    }
+  }, [currentSlideIndex, id, navigate, presentation]);
 
   const handleNextSlide = () => {
     if (currentSlideIndex < presentation.slidesArr.length - 1) {
@@ -54,10 +62,6 @@ const PreviewPresentation = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [currentSlideIndex, presentation]);
-
-  if (!presentation) {
-    return <div>Loading...</div>;
-  }
 
   if (!presentation) {
     return <div>Loading...</div>;

@@ -17,7 +17,7 @@ import ConfirmDeleteElement from '../modal/ConfirmDeleteElement';
 const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
 
 const EditPresentation = () => {
-  const { id } = useParams();
+  const { id, slideNumber } = useParams();
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [error, setError] = useState('');
@@ -26,7 +26,7 @@ const EditPresentation = () => {
   const [presentation, setPresentation] = useState(null);
   const [showTitleModal, setShowTitleModal] = useState(false);
   const [showThumbnailModal, setShowThumbnailModal] = useState(false);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(parseInt(slideNumber, 10) - 1 || 0);
   const [showToolbar, setShowToolbar] = useState(false);
   const [editingElement, setEditingElement] = useState(null); // Track the element being edited
   const [showTextModal, setShowTextModal] = useState(false);
@@ -140,6 +140,13 @@ const EditPresentation = () => {
         setShowPopup(true);
       });
   };
+
+  // Update URL whenever currentSlideIndex changes
+  useEffect(() => {
+    if (presentation) {
+      navigate(`/presentation/${id}/slide/${currentSlideIndex + 1}`, { replace: true });
+    }
+  }, [currentSlideIndex, id, navigate, presentation]);
 
   const handleNextSlide = () => {
     if (currentSlideIndex < (presentation.slidesArr.length - 1)) {
@@ -345,7 +352,7 @@ const EditPresentation = () => {
 
         {/* Preview Button */}
         <button
-          onClick={() => window.open(`/preview/${id}`, '_blank')}
+          onClick={() => window.open(`/preview/${id}/slide/1`, '_blank')}
           className="bg-black text-white px-4 py-2 rounded flex items-center space-x-2 hover:bg-gray-900"
         >
           <svg className="h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">

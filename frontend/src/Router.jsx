@@ -58,8 +58,8 @@ function Router() {
         <Route path="/dashboard" element={<Dashboard token={token} />} />
         <Route path="/register" element={<Register handleSuccess={handleNewToken} />} />
         <Route path="/login" element={<Login handleSuccess={handleNewToken} />} />
-        <Route path="/presentation/:id" element={<EditPresentation />} />
-        <Route path="/preview/:id" element={<PreviewPresentation />} />
+        <Route path="/presentation/:id/slide/:slideNumber" element={<EditPresentation />} />
+        <Route path="/preview/:id/slide/:slideNumber" element={<PreviewPresentation />} />
 
         {/* Catch-all route for invalid paths */}
         <Route
