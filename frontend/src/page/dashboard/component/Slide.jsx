@@ -34,7 +34,7 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement, onSaveBackground,
         <button
           onClick={() => setShowBackgroundModal(true)}
           className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded flex items-center space-x-2"
-        >
+          style={{ zIndex: 1000 }}>
           <svg className="h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" />
             <line x1="11" y1="7" x2="17" y2="13" />
@@ -42,7 +42,7 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement, onSaveBackground,
           </svg>
           <span>Fill</span>
         </button>
-      )};
+      )}
 
       {slide.elements.map((element) => (
         element.type === 'text' ? (
@@ -149,7 +149,7 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement, onSaveBackground,
         ) : null  // Default case to handle other element types
       ))}
       {/* Slide Number Indicator */}
-      <div className="absolute bottom-1 left-0.5 w-8 h-8 flex items-center justify-center text-sm font-semibold text-gray-600 rounded bg-white" style={{ fontSize: '1em' }}>
+      <div className="absolute bottom-1 left-0.5 w-8 h-8 flex items-center justify-center text-sm font-semibold text-gray-600 rounded bg-white" style={{ fontSize: '1em', zIndex: 1000 }}>
         {index + 1}
       </div>
 
