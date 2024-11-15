@@ -13,7 +13,7 @@ hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('python', python);
 hljs.registerLanguage('c', c);
 
-const Slide = ({ slide, index, onEditElement, onDeleteElement, onSaveBackground, presentation }) => {
+const Slide = ({ slide, index, onEditElement, onDeleteElement, onSaveBackground, presentation, previewMode }) => {
   const [showBackgroundModal, setShowBackgroundModal] = useState(false);
 
   return (
@@ -26,20 +26,24 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement, onSaveBackground,
             ? `url(${slide.background.image})`
             : 'none',
         backgroundSize: 'cover',
+        border: previewMode ? 'none' : '1px solid lightgrey',
       }}
     >
-      {/* Background Picker Button */}
-      <button
-        onClick={() => setShowBackgroundModal(true)}
-        className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded flex items-center space-x-2"
-      >
-        <svg className="h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" />
-          <line x1="11" y1="7" x2="17" y2="13" />
-          <path d="M5 19v-4l9.7 -9.7a1 1 0 0 1 1.4 0l2.6 2.6a1 1 0 0 1 0 1.4l-9.7 9.7h-4" />
-        </svg>
-        <span>Fill</span>
-      </button>
+      {/* Conditionally render the Background Picker Button */}
+      {!previewMode && (
+        <button
+          onClick={() => setShowBackgroundModal(true)}
+          className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded flex items-center space-x-2"
+        >
+          <svg className="h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" />
+            <line x1="11" y1="7" x2="17" y2="13" />
+            <path d="M5 19v-4l9.7 -9.7a1 1 0 0 1 1.4 0l2.6 2.6a1 1 0 0 1 0 1.4l-9.7 9.7h-4" />
+          </svg>
+          <span>Fill</span>
+        </button>
+      )};
+
       {slide.elements.map((element) => (
         element.type === 'text' ? (
           <div
@@ -145,7 +149,7 @@ const Slide = ({ slide, index, onEditElement, onDeleteElement, onSaveBackground,
         ) : null  // Default case to handle other element types
       ))}
       {/* Slide Number Indicator */}
-      <div className="absolute bottom-1 left-0.5 w-12 h-12 flex items-center justify-center text-sm font-semibold text-gray-600 rounded" style={{ fontSize: '1em' }}>
+      <div className="absolute bottom-1 left-0.5 w-8 h-8 flex items-center justify-center text-sm font-semibold text-gray-600 rounded bg-white" style={{ fontSize: '1em' }}>
         {index + 1}
       </div>
 

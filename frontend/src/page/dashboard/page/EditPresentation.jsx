@@ -333,13 +333,34 @@ const EditPresentation = () => {
         </div>
       </div>
 
-      {/* Button to toggle toolbar */}
-      <button
-        onClick={() => setShowToolbar((prev) => !prev)}
-        className="bg-blue-600 text-white px-3 py-2 my-6 rounded mb-4"
-      >
-        {showToolbar ? "Hide Toolbar" : "Show Toolbar"}
-      </button>
+      {/* Button to toggle toolbar and preview presentation */}
+      <div className="flex justify-between items-center mb-4">
+        {/* Toolbar Toggle Button */}
+        <button
+          onClick={() => setShowToolbar((prev) => !prev)}
+          className="bg-blue-600 text-white px-3 py-2 rounded"
+        >
+          {showToolbar ? "Hide Toolbar" : "Show Toolbar"}
+        </button>
+
+        {/* Preview Button */}
+        <button
+          onClick={() => window.open(`/preview/${id}`, '_blank')}
+          className="bg-black text-white px-4 py-2 rounded flex items-center space-x-2 hover:bg-gray-900"
+        >
+          <svg className="h-5 w-5 text-white" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" />
+            <line x1="15" y1="6" x2="15.01" y2="6" />
+            <rect x="3" y="3" width="18" height="14" rx="3" />
+            <path d="M3 13l4 -4a3 5 0 0 1 3 0l4 4" />
+            <path d="M13 12l2 -2a3 5 0 0 1 3 0l3 3" />
+            <line x1="8" y1="21" x2="8.01" y2="21" />
+            <line x1="12" y1="21" x2="12.01" y2="21" />
+            <line x1="16" y1="21" x2="16.01" y2="21" />
+          </svg>
+          <span>Preview Slides</span>
+        </button>
+      </div>
 
       {/* Responsive layout with the toolbar */}
       <div className="flex flex-col lg:flex-row lg:space-x-4 items-center lg:items-start">

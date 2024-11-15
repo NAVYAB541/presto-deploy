@@ -6,6 +6,7 @@ import Dashboard from './page/dashboard/Dashboard';
 import Logout from './component/Logout';
 import LandingPage from './page/LandingPage';
 import EditPresentation from './page/dashboard/page/EditPresentation';
+import PreviewPresentation from './page/dashboard/page/PreviewPresentation';
 
 function Router() {
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -58,6 +59,7 @@ function Router() {
         <Route path="/register" element={<Register handleSuccess={handleNewToken} />} />
         <Route path="/login" element={<Login handleSuccess={handleNewToken} />} />
         <Route path="/presentation/:id" element={<EditPresentation />} />
+        <Route path="/preview/:id" element={<PreviewPresentation />} />
 
         {/* Catch-all route for invalid paths */}
         <Route
