@@ -84,3 +84,27 @@ selection before adding it to the slide.
 image, video, and code blocks are accompanied by distinct icons that align with 
 each element type. This icon-based design aids in quick recognition, making the 
 interface more visually informative and user-friendly.
+
+- **Responsive Toolbar**: The toolbar was designed to be fully responsive, 
+adapting its layout based on the screen size. On larger screens, 
+the toolbar appears vertically on the left side, shifting the slides 
+to the right to accommodate it while maintaining a balanced layout. 
+On smaller screens, the toolbar switches to a horizontal layout at the top, 
+ensuring that the slide remains centered and maximized for editing. This dynamic
+adjustment enhances usability across devices and screen sizes, providing an 
+optimized experience for both desktop and mobile users.
+
+## 2.4 Feature Set 4
+
+- **Enhanced Font Selection Experience**: The font-family dropdown in the 
+**AddTextModal** and **EditTextModal** allows users to choose between multiple 
+font styles with a real-time visual preview. This feature provides a clear sense
+ of customization, improving the text editing experience beyond the basic 
+ requirements.
+
+- **Interactive Background Selection**: Designed a modal for choosing 
+background styles (solid, gradient, or image) that provides real-time 
+visual previews of the selected background. The inclusion of gradient 
+direction controls (e.g., left-to-right, top-to-bottom) and a toggle to
+ edit either the current or default background settings enhances user control 
+ and decision-making.
