@@ -36,6 +36,7 @@ const EditPresentation = () => {
   const [showDeleteElementModal, setShowDeleteElementModal] = useState(false);
   const [elementToDelete, setElementToDelete] = useState(null);
 
+  // Fetch presentation data on component mount
   useEffect(() => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -55,6 +56,7 @@ const EditPresentation = () => {
       });
   }, [id]);
 
+  // Close Error Popup
   const handlePopupClose = () => {
     setShowPopup(false);
     if (!isDeleteSlideError) {
@@ -63,6 +65,7 @@ const EditPresentation = () => {
     setIsDeleteSlideError(false); // Reset the flag after closing
   };
 
+  // Update the presentation data on the backend
   const updatePresentation = (updatedData) => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -88,6 +91,7 @@ const EditPresentation = () => {
       });
   };
 
+  // Add a new slide to the presentation
   const handleAddSlide = () => {
     const newSlide = {
       id: `slide-${Date.now()}`,
@@ -102,6 +106,7 @@ const EditPresentation = () => {
     updatePresentation({ slidesArr: updatedSlidesArr, slides: updatedSlidesCount });
   };
 
+  // Delete the current slide from the presentation
   const handleDeleteSlide = () => {
     if (presentation.slidesArr.length === 1) {
       setError('Cannot delete the only slide. Consider deleting the entire presentation.');
@@ -119,6 +124,7 @@ const EditPresentation = () => {
     updatePresentation({ slidesArr: updatedSlidesArr, slides: updatedSlidesCount });
   };
 
+  // Delete the entire presentation
   const handleDeletePresentation = () => {
     axios.get(`${BACKEND_BASE_URL}/store`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -141,25 +147,28 @@ const EditPresentation = () => {
       });
   };
 
-  // Update URL whenever currentSlideIndex changes
+  // Update the URL whenever the current slide index changes
   useEffect(() => {
     if (presentation) {
       navigate(`/presentation/${id}/slide/${currentSlideIndex + 1}`, { replace: true });
     }
   }, [currentSlideIndex, id, navigate, presentation]);
 
+  // Go to the next slide
   const handleNextSlide = () => {
     if (currentSlideIndex < (presentation.slidesArr.length - 1)) {
       setCurrentSlideIndex((prevIndex) => prevIndex + 1);
     }
   };
 
+  // Go to the previous slide
   const handlePreviousSlide = () => {
     if (currentSlideIndex > 0) {
       setCurrentSlideIndex((prevIndex) => prevIndex - 1);
     }
   };
 
+  // Handle keyboard navigation for slides
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight' && currentSlideIndex < presentation.slidesArr.length - 1) {
@@ -174,6 +183,7 @@ const EditPresentation = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentSlideIndex, presentation]);
 
+  // Edit an element on the slide
   const handleEditElement = (element) => {
     setEditingElement(element);
     if (element.type === 'text') {
@@ -187,6 +197,7 @@ const EditPresentation = () => {
     }
   };
 
+  // Save changes to the edited element
   const handleSaveEditedElement = (updatedElement) => {
     const updatedSlidesArr = presentation.slidesArr.map((slide, index) =>
       index === currentSlideIndex
@@ -207,11 +218,13 @@ const EditPresentation = () => {
     setEditingElement(null); // Clear the editing element
   };
 
+  // Delete an element from the slide
   const handleDeleteElement = (elementId) => {
     setElementToDelete(elementId);
     setShowDeleteElementModal(true);
   };
 
+  // Confirm deletion of an element
   const confirmDeleteElement = () => {
     const updatedSlidesArr = presentation.slidesArr.map((slide, index) =>
       index === currentSlideIndex
@@ -223,6 +236,7 @@ const EditPresentation = () => {
     setElementToDelete(null);
   };
 
+  // Cancel deletion of an element
   const cancelDeleteElement = () => {
     setShowDeleteElementModal(false);
     setElementToDelete(null);
