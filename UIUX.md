@@ -107,4 +107,4 @@ background styles (solid, gradient, or image) that provides real-time
 visual previews of the selected background. The inclusion of gradient 
 direction controls (e.g., left-to-right, top-to-bottom) and a toggle to
  edit either the current or default background settings enhances user control 
- and decision-making.
+ and decision-making. 
