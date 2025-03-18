@@ -10,6 +10,7 @@ export default defineConfig({
     setupFiles: './src/setup.js',
   },
   server: {
-    port: 3000,
+    host: '0.0.0.0',  // Allows external access
+    port: 3000
   },
 })
