@@ -1,0 +1,11 @@
+{
+  "watch": [
+    "api"
+  ],
+  "ext": "js,json",
+  "ignore": [
+    "node_modules",
+    "database.json"
+  ],
+  "exec": "node -r esm api/index.js"
+}
