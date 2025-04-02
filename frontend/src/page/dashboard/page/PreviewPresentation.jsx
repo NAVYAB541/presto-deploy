@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import backendConfig from '../../../../backend.config.json';
 import Slide from '../component/Slide';
 
-const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
+const BACKEND_BASE_URL = `http://3.25.114.43:${backendConfig.BACKEND_PORT}`;
 
 const PreviewPresentation = () => {
   const { id, slideNumber } = useParams();

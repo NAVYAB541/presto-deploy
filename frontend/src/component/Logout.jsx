@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import backendConfig from '../../backend.config.json';
 import ErrorPopup from './ErrorPopup';
 
-const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
+const BACKEND_BASE_URL = `http://3.25.114.43:${backendConfig.BACKEND_PORT}`;
 
 const Logout = ({ token, setToken }) => {
   const navigate = useNavigate();
