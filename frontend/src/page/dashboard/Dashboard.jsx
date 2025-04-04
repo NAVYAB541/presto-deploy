@@ -61,7 +61,7 @@ const Dashboard = ({ token }) => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
+      <h2 className="text-2xl font-bold mb-4">Wecome User!</h2>
       <button
         onClick={() => setShowModal(true)}
         className="bg-blue-600 text-white px-4 py-2 rounded mb-6"
