@@ -40,29 +40,54 @@ resource "aws_instance" "presto_terraform_ec2" {
     Name = "Presto-Terraform-Server"
   }
 
-  # Save PEM locally to Keys folder
-  provisioner "local-exec" {
-    command = <<-EOT
-      echo "xyz" > ${path.module}/../Keys/presto_terraform_key.pem
-      chmod 400 ${path.module}/../Keys/presto_terraform_key.pem
-    EOT
-  }
-
   # SSH connection and remote execution
   connection {
     type        = "ssh"
-    user        = "ec2-user"  # For Amazon Linux AMI
+    user        = "ubuntu"  # For Amazon Linux AMI
     private_key = tls_private_key.presto_terraform_key.private_key_pem
     host        = self.public_ip
+    timeout     = "2m"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "echo 'Hello from the remote instance!'",
-      "sudo yum update -y",  # Example command to run on the instance
-      "hostname"             # Another example command
+      # Install Docker
+      "sudo apt-get update -y",
+      "echo 'apt-get update -y completed !'",
+      "sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common",
+      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+      "sudo add-apt-repository -y \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+      "sudo apt-get update -y",
+      "sudo apt-get install -y docker-ce",
+      "echo 'install -y docker-ce completed !'",
+      "sudo usermod -aG docker ubuntu",
+      
+      # Run Jenkins container
+      "sudo docker run -d --name jenkins \\",
+      "  --user root \\",
+      "  -p 8080:8080 \\",
+      "  -p 50000:50000 \\",
+      "  -v /var/run/docker.sock:/var/run/docker.sock \\",
+      "  -v $(which docker):/usr/bin/docker \\",
+      "  -v jenkins_home:/var/jenkins_home \\",
+      "  jenkins/jenkins:lts",
+      
+      "echo 'Run Jenkins containe completed !'",
+      # Wait for Jenkins to start
+      "sleep 30",  # Give Jenkins time to start
+      
+      # Get initial admin password
+      "echo 'Jenkins initial admin password:'",
+      "sudo docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword"
     ]
   }
+}
+
+# Save PEM locally to Keys folder
+resource "local_file" "presto_key" {
+  content  = tls_private_key.presto_terraform_key.private_key_pem
+  filename = "${path.module}/../Keys/presto_terraform_key.pem"
+  file_permission = "0400"
 }
 
 output "instance_public_ip" {
@@ -79,4 +104,8 @@ output "ssh_command" {
 
 output "module_path" {
   value = path.module
+}
+
+output "jenkins_url" {
+  value = "http://${aws_instance.presto_terraform_ec2.public_ip}:8080"
 }

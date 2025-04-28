@@ -16,11 +16,11 @@ variable "instance_type" {
 }
 
 variable "ami_id" {
-  description = "Amazon Linux 2 AMI"
+  description = "Ubuntu AMI ID"
   type        = string
 }
 
 variable "public_ports" {
   type        = list(number)
-  default     = [22, 80, 5005]
+  default     = [22, 80, 5005, 443, 8080]
 }
