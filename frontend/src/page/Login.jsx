@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ErrorPopup from '../component/ErrorPopup';
 import backendConfig from '../../backend.config.json';
 
-const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
+const BACKEND_BASE_URL = `http://3.25.114.43:${backendConfig.BACKEND_PORT}`;
 
 function Login({ handleSuccess }) {
   const [email, setEmail] = useState('');

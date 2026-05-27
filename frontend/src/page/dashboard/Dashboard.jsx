@@ -5,7 +5,7 @@ import NewPresentationModal from './modal/NewPresentationModal';
 import PresentationCard from './component/PresentationCard';
 import ErrorPopup from '../../component/ErrorPopup';
 
-const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
+const BACKEND_BASE_URL = `http://3.25.114.43:${backendConfig.BACKEND_PORT}`;
 
 const Dashboard = ({ token }) => {
   const [store, setStore] = useState({ decks: [] });

@@ -14,7 +14,7 @@ import EditVideoModal from '../modal/EditVideoModal';
 import EditCodeModal from '../modal/EditCodeModal';
 import ConfirmDeleteElement from '../modal/ConfirmDeleteElement';
 
-const BACKEND_BASE_URL = `http://localhost:${backendConfig.BACKEND_PORT}`;
+const BACKEND_BASE_URL = `http://3.25.114.43:${backendConfig.BACKEND_PORT}`;
 
 const EditPresentation = () => {
   const { id, slideNumber } = useParams();
